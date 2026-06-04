@@ -1,0 +1,90 @@
+body {
+    background-color: #fffacd;
+    color: #000000;
+    font-family: Arial, sans-serif;
+}
+
+.navbar {
+    background-color: #f0e68c !important;
+}
+
+.navbar-brand, .nav-link {
+    color: #000000 !important;
+}
+
+.card {
+    background-color: #ffffe0;
+    border: 1px solid #000000;
+    margin-bottom: 20px;
+}
+
+.card-header {
+    background-color: #f0e68c;
+    color: #000000;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #daa520;
+    border-color: #daa520;
+    color: #000000;
+}
+
+.btn-primary:hover {
+    background-color: #b8860b;
+    border-color: #b8860b;
+    color: #000000;
+}
+
+.table {
+    background-color: #ffffe0;
+    color: #000000;
+}
+
+.table th {
+    background-color: #f0e68c;
+    color: #000000;
+}
+
+.alert {
+    color: #000000;
+}
+
+.form-control, .form-select {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+}
+
+.form-check-input {
+    border: 1px solid #000000;
+}
+
+pre {
+    background-color: #ffffff;
+    color: #000000;
+    border: 1px solid #000000;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.metric-card {
+    background-color: #ffffe0;
+    border: 2px solid #daa520;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+}
+
+.metric-value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #b8860b;
+}
+
+.confusion-matrix {
+    background-color: #ffffff;
+    padding: 10px;
+    border: 1px solid #000000;
+    border-radius: 5px;
+}

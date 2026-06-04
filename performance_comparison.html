@@ -1,0 +1,165 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>Performance Comparison - All Classifiers</h3>
+            </div>
+            <div class="card-body">
+                {% if main_results %}
+                <h4 class="mt-3">Main Disorder Classification</h4>
+                <div class="table-responsive mt-3">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Classifier</th>
+                                <th>Accuracy (A)</th>
+                                <th>Precision (P)</th>
+                                <th>Recall (R)</th>
+                                <th>F1-Score (F1)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for classifier_name, metrics in main_results.items() %}
+                            <tr>
+                                <td><strong>{{ classifier_name }}</strong></td>
+                                <td>{{ "%.4f"|format(metrics.accuracy) }}</td>
+                                <td>{{ "%.4f"|format(metrics.precision) }}</td>
+                                <td>{{ "%.4f"|format(metrics.recall) }}</td>
+                                <td>{{ "%.4f"|format(metrics.f1_score) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+
+                {% if specific_results %}
+                <h4 class="mt-5">Specific Disorder Classification</h4>
+                <div class="table-responsive mt-3">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Classifier</th>
+                                <th>Accuracy (A)</th>
+                                <th>Precision (P)</th>
+                                <th>Recall (R)</th>
+                                <th>F1-Score (F1)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for classifier_name, metrics in specific_results.items() %}
+                            <tr>
+                                <td><strong>{{ classifier_name }}</strong></td>
+                                <td>{{ "%.4f"|format(metrics.accuracy) }}</td>
+                                <td>{{ "%.4f"|format(metrics.precision) }}</td>
+                                <td>{{ "%.4f"|format(metrics.recall) }}</td>
+                                <td>{{ "%.4f"|format(metrics.f1_score) }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+
+                {% if not main_results and not specific_results %}
+                <div class="alert alert-info mt-3">
+                    <p>No trained models found. Please train classifiers first.</p>
+                    <a href="{{ url_for('main_disorder_classification') }}" class="btn btn-primary">Train Main Disorder Classifiers</a>
+                    <a href="{{ url_for('specific_disorder_classification') }}" class="btn btn-primary">Train Specific Disorder Classifiers</a>
+                </div>
+                {% endif %}
+
+                <div class="mt-4">
+                    <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if main_results or specific_results %}
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Main Disorder - Accuracy Comparison</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="mainAccuracyChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5>Specific Disorder - Accuracy Comparison</h5>
+            </div>
+            <div class="card-body">
+                <canvas id="specificAccuracyChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if main_results or specific_results %}
+<script>
+    {% if main_results %}
+    const mainCtx = document.getElementById('mainAccuracyChart').getContext('2d');
+    new Chart(mainCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ main_results.keys()|list|tojson }},
+            datasets: [{
+                label: 'Accuracy',
+                data: {{ [main_results[clf].accuracy for clf in main_results.keys()]|tojson }},
+                backgroundColor: '#daa520',
+                borderColor: '#b8860b',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 1
+                }
+            }
+        }
+    });
+    {% endif %}
+
+    {% if specific_results %}
+    const specificCtx = document.getElementById('specificAccuracyChart').getContext('2d');
+    new Chart(specificCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ specific_results.keys()|list|tojson }},
+            datasets: [{
+                label: 'Accuracy',
+                data: {{ [specific_results[clf].accuracy for clf in specific_results.keys()]|tojson }},
+                backgroundColor: '#daa520',
+                borderColor: '#b8860b',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 1
+                }
+            }
+        }
+    });
+    {% endif %}
+</script>
+{% endif %}
+{% endblock %}

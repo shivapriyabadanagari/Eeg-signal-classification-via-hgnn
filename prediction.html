@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>Batch Prediction from Test Data</h3>
+            </div>
+            <div class="card-body">
+                <p>Upload a CSV file containing EEG test data to get predictions for psychiatric disorders.</p>
+                
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Select Test CSV File</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".csv" required>
+                        <div class="form-text">The CSV file should have the same EEG features as the training data.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="target_column" class="form-label">Select Target Classification</label>
+                        <select class="form-select" id="target_column" name="target_column" required>
+                            <option value="main.disorder">Main Disorder</option>
+                            <option value="specific.disorder">Specific Disorder</option>
+                        </select>
+                    </div>
+
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg">Upload and Predict</button>
+                        <a href="{{ url_for('home') }}" class="btn btn-secondary btn-lg">Cancel</a>
+                    </div>
+                </form>
+
+                <div class="mt-4">
+                    <h5>Instructions:</h5>
+                    <ul>
+                        <li>Ensure your test CSV file has the same EEG feature columns as the training data</li>
+                        <li>The system will use all trained classifiers to make predictions</li>
+                        <li>Results will show predictions from each classifier for comparison</li>
+                        <li>Models must be trained before making predictions</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

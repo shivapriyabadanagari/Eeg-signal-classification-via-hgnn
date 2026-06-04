@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h2>Neural Network-Based Predictive Modeling for Complex Psychiatric Disorder Identification from EEG Features</h2>
+            </div>
+            <div class="card-body">
+                <h4>Welcome to the EEG Psychiatric Disorder Classification System</h4>
+                <p>This application uses advanced machine learning techniques to classify psychiatric disorders based on EEG (Electroencephalography) features.</p>
+                
+                <h5 class="mt-4">System Features:</h5>
+                <ul>
+                    <li><strong>Multiple Classification Models:</strong> Random Forest, Support Vector Machine, Logistic Regression, Decision Tree, and Hybrid Graph Neural Network (HGNN)</li>
+                    <li><strong>Two-Level Classification:</strong>
+                        <ul>
+                            <li>Main Disorder Classification</li>
+                            <li>Specific Disorder Classification</li>
+                        </ul>
+                    </li>
+                    <li><strong>Comprehensive Performance Metrics:</strong> Accuracy, Precision, Recall, F1-Score, Confusion Matrix, and Classification Report</li>
+                    <li><strong>Model Persistence:</strong> Trained models are saved and can be reused without retraining</li>
+                </ul>
+
+                {% if current_user.role == 'admin' %}
+                <div class="mt-4">
+                    <h5>Admin Features:</h5>
+                    <div class="row mt-3">
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Exploratory Data Analysis</h5>
+                                    <p class="card-text">View dataset statistics and visualizations</p>
+                                    <a href="{{ url_for('eda') }}" class="btn btn-primary">View EDA</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Main Disorder Classification</h5>
+                                    <p class="card-text">Train and analyze main disorder classifiers</p>
+                                    <a href="{{ url_for('main_disorder_classification') }}" class="btn btn-primary">Classify</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Specific Disorder Classification</h5>
+                                    <p class="card-text">Train and analyze specific disorder classifiers</p>
+                                    <a href="{{ url_for('specific_disorder_classification') }}" class="btn btn-primary">Classify</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Performance Comparison</h5>
+                                    <p class="card-text">Compare all classifiers side-by-side</p>
+                                    <a href="{{ url_for('performance_comparison') }}" class="btn btn-primary">Compare</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% elif current_user.role == 'user' %}
+                <div class="mt-4">
+                    <h5>User Features:</h5>
+                    <div class="row mt-3">
+                        <div class="col-md-6 mb-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">Batch Prediction</h5>
+                                    <p class="card-text">Upload test CSV file for disorder prediction</p>
+                                    <a href="{{ url_for('prediction') }}" class="btn btn-primary">Make Predictions</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

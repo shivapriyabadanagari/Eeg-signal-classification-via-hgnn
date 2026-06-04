@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header">
+                <h3>{{ target }} Classification Results</h3>
+            </div>
+            <div class="card-body">
+                {% for classifier_name, metrics in results.items() %}
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h4>{{ classifier_name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="metric-card">
+                                    <h6>Accuracy (A)</h6>
+                                    <div class="metric-value">{{ "%.4f"|format(metrics.accuracy) }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="metric-card">
+                                    <h6>Precision (P)</h6>
+                                    <div class="metric-value">{{ "%.4f"|format(metrics.precision) }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="metric-card">
+                                    <h6>Recall (R)</h6>
+                                    <div class="metric-value">{{ "%.4f"|format(metrics.recall) }}</div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="metric-card">
+                                    <h6>F1-Score (F1)</h6>
+                                    <div class="metric-value">{{ "%.4f"|format(metrics.f1_score) }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <h5 class="mt-4">Confusion Matrix (CM)</h5>
+                        <div class="confusion-matrix mt-3">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        {% for class_name in metrics.classes %}
+                                        <th>{{ class_name }}</th>
+                                        {% endfor %}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for row in metrics.confusion_matrix %}
+                                    <tr>
+                                        <td><strong>{{ metrics.classes[loop.index0] }}</strong></td>
+                                        {% for value in row %}
+                                        <td>{{ value }}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <h5 class="mt-4">Classification Report (CR)</h5>
+                        <pre>{{ metrics.classification_report }}</pre>
+                    </div>
+                </div>
+                {% endfor %}
+
+                <div class="mt-4">
+                    <a href="{{ url_for(endpoint) }}" class="btn btn-primary">Train More Classifiers</a>
+                    <a href="{{ url_for('home') }}" class="btn btn-secondary">Back to Home</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
